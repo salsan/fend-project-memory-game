@@ -96,7 +96,7 @@ function clickCard(evt) {
     if (initTime == 0) {
 
       timerBoardId = setInterval(function() {
-        initTimerBoard()
+          initTimerBoard();
       }, 1000);
       initTime++;
     }
@@ -198,7 +198,7 @@ function finishGame() {
   resetGame();
 }
 
-function startGame(){
+function startGame() {
   modalWindow.style.display = "none";
   resetGame();
 }
