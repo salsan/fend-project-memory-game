@@ -57,7 +57,6 @@ function shuffle(array) {
 
 
 /* close card if is not matched*/
-
 function closeCard(value) {
   let cardClose = document.getElementsByClassName("open");
   cardClose[0].className = "card";
@@ -96,7 +95,7 @@ function clickCard(evt) {
     if (initTime == 0) {
 
       timerBoardId = setInterval(function() {
-          initTimerBoard();
+        initTimerBoard();
       }, 1000);
       initTime++;
     }
