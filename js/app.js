@@ -13,11 +13,24 @@ const timerBoard = document.querySelector("time");
 let timerBoardId;
 let cardsOpen = 0;
 let cardLast = '';
-let initTime = 0;
 let cardsCount = 0;
 let cardsMatched = 0;
+/* Timer Variable */
+let initTime = 0;
 let t = 0;
-
+/* Model Variable */
+/* Get the modal */
+let modal = document.getElementById('myModal');
+/* Get the button that opens the modal */
+let btn = document.getElementById("myBtn");
+/* Get the <span> element that closes the modal */
+let span = document.getElementsByClassName("close")[0];
+let modalMessage = document.querySelector(".modal-message");
+let modalRestart = document.querySelector("button");
+let modalWindow = document.getElementById("myModal");
+/* Stars */
+let starsCount = 3;
+const starsIcons = document.getElementsByClassName("fa-star");
 
 /*
  * Display the cards on the page
@@ -43,40 +56,36 @@ function shuffle(array) {
 }
 
 
+/* close card if is not matched*/
 
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
+function closeCard(value) {
+  let cardClose = document.getElementsByClassName("open");
+  cardClose[0].className = "card";
 
-/* TODO need fix*/
- function closeCard(value){
-   let cardClose = document.getElementsByClassName("open");
-   cardClose[0].className = "card";
+  cardClose[0] = document.getElementsByClassName("open");
+  cardClose[0].className = "card";
 
-   cardClose[0] = document.getElementsByClassName("open");
-   cardClose[0].className = "card";
-
-   document.body.style.pointerEvents = 'auto';
+  document.body.style.pointerEvents = 'auto';
 }
 
- function matchedCard(value){
+/* show card if matched */
+function matchedCard(value) {
 
-   let cardMatched = document.getElementsByClassName("open");
-   cardMatched[0].className = "card match show";
+  let cardMatched = document.getElementsByClassName("open");
+  cardMatched[0].className = "card match show";
 
 
-   cardMatched = document.getElementsByClassName("open");
-   cardMatched[0].className = "card match show";
-   document.body.style.pointerEvents = 'auto';
+  cardMatched = document.getElementsByClassName("open");
+  cardMatched[0].className = "card match show";
+  document.body.style.pointerEvents = 'auto';
 
- }
+  if (cardsMatched == 8) {
+    finishGame();
+  }
+
+}
+
+/* Manage event if click card on the board */
 
 function clickCard(evt) {
 
@@ -84,10 +93,11 @@ function clickCard(evt) {
 
   if (isCard == "card") {
 
-    if ( initTime == 0 ){
+    if (initTime == 0) {
 
-      timerBoardId = setInterval(function(){ initTimerBoard() }, 1000);
-      console.log("The card value " +initTime);
+      timerBoardId = setInterval(function() {
+        initTimerBoard()
+      }, 1000);
       initTime++;
     }
 
@@ -97,32 +107,44 @@ function clickCard(evt) {
 
     if (cardsOpen <= 2) {
 
-      evt.target.className  = "card open show";
+      evt.target.className = "card open show";
 
-      if ( cardsOpen == 2 ){
+      if (cardsOpen == 2) {
         if (cardLast == cardCurrent) {
-            setTimeout(function() {
-              matchedCard(cardLast);
-              cardsMatched++;
-            }, 800);
-          } else {
-            setTimeout(function() {
-              closeCard(cardLast);
-            }, 800);
-          }
-          cardsCount++;
-          cardsOpen = 0;
-          document.body.style.pointerEvents = 'none';
-          initMovesCounter(cardsCount);
+          cardsMatched++;
+          setTimeout(function() {
+            matchedCard(cardLast);
+          }, 800);
+        } else {
+          setTimeout(function() {
+            closeCard(cardLast);
+          }, 800);
+        }
+
+        cardsCount++;
+        cardsOpen = 0;
+        document.body.style.pointerEvents = 'none';
+        initMovesCounter(cardsCount);
+
+        /* */
+        switch (cardsCount) {
+          case 12:
+          case 24:
+          case 48:
+            starsCount--;
+            starsIcons[starsCount].style.display = "none";
+            break;
+
         }
 
 
-    }
+      }
 
-    cardLast = evt.target.querySelector("i").className;
+      cardLast = evt.target.querySelector("i").className;
+
+    }
   }
 
-  console.log(cardsCount);
 }
 
 /* Moves Counter*/
@@ -131,39 +153,60 @@ function initMovesCounter(value) {
   movesCount.innerHTML = value;
 }
 
+/* Initialize the board with the cards */
 function initBoard(card, index) {
   cardsList[index].querySelector("i").className = "fa " + card;
   cardsList[index].className = "card";
   cardsList[index].addEventListener('click', clickCard);
 }
 
-function initTimerBoard(){
-
-    timerBoard.innerHTML = t + "s";
-
-    t++;
-
-
+/* Manage time of game */
+function initTimerBoard() {
+  timerBoard.innerHTML = t + "s";
+  t++;
 }
 
-function initGame(){
+/* Initialize the board game */
+function initGame() {
   let cardShuffle = shuffle(cardsIcon);
   cardShuffle.forEach(initBoard);
+  for (var i = 0; i < starsIcons.length; i++) {
+    starsIcons[i].style.display = "inline-block";
+  }
+
   cardsCount = 0;
+  starsCount = 3;
   /* reset moves  counter */
   initMovesCounter(0);
 
 }
 
-function resetGame(){
+/* Reset event and board game */
+function resetGame() {
   clearInterval(timerBoardId);
   t = 0;
   initTime = 0;
+  cardsMatched = 0;
   timerBoard.innerHTML = t + "s";
   initGame();
 }
 
+/* Display winning message */
+function finishGame() {
+  modalMessage.innerText = "You are winner!!! in " + t + " seconds with " + starsCount + " stars";
+  modalWindow.style.display = "block";
+  resetGame();
+}
+
+/*  */
+function startGame(){
+  modalWindow.style.display = "none";
+  resetGame();
+}
+
+
 initGame();
 
-/* Event Reset Board*/
+/* Event Reset Board */
 resetBoard.addEventListener('click', resetGame);
+modalRestart.addEventListener('click', startGame);
