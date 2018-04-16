@@ -109,6 +109,7 @@ h1 {
 
 time {
   margin-left: 50px;
+  width: 100%;
 }
 
 /* The Modal (background)
@@ -162,3 +163,9 @@ time {
   text-decoration: none;
   cursor: pointer;
 }
+
+button{
+  min-width: 48px;
+  min-height: 48px;
+  width: 100%;
+};
