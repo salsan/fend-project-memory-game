@@ -198,7 +198,6 @@ function finishGame() {
   resetGame();
 }
 
-/*  */
 function startGame(){
   modalWindow.style.display = "none";
   resetGame();
