@@ -38,9 +38,9 @@ Every time you **reveal 2 cards**, you make a move. Thoses moves are tracked and
 ### Stars / Lifes
 
 You start with **3 stars**.
-- 3 stars than 15 moves
-- 2 stars than 30 moves
-- 1 stars over 30 moves
+- 3 stars less than 15 moves
+- 2 stars from 15 and less than 30 moves
+- 1 star over 30 moves
 
 ### Timer
 
