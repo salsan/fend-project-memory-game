@@ -125,15 +125,14 @@ function clickCard(evt) {
         document.body.style.pointerEvents = 'none';
         initMovesCounter(cardsCount);
 
-        /* */
         switch (cardsCount) {
-          case 12:
-          case 24:
-          case 48:
+          case 15:
+          case 30:
             starsCount--;
             starsIcons[starsCount].style.display = "none";
             break;
-
+          default:
+            break;
         }
 
 
@@ -192,7 +191,7 @@ function resetGame() {
 
 /* Display winning message */
 function finishGame() {
-  modalMessage.innerText = "You are winner!!! in " + t + " seconds with " + starsCount + " stars";
+  modalMessage.innerText = "You are winner!!! in " + t + " seconds and " + cardsCount + " moves,  with " + starsCount + " stars";
   modalWindow.style.display = "block";
   resetGame();
 }
